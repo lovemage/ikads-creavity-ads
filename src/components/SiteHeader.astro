@@ -6,16 +6,15 @@ import { site, nav } from '../data/site';
 <header class="hdr">
   <div class="container hdr__inner">
     <a class="hdr__brand" href="#main">
-      <span class="hdr__mark" aria-hidden="true">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none">
-          <path
-            d="M12 1.5 13.9 8.2 20.5 12 13.9 15.8 12 22.5 10.1 15.8 3.5 12 10.1 8.2Z"
-            fill="var(--brand)"
-          />
-        </svg>
-      </span>
+      {/* 字標只有 K ＋ 星，全名由旁邊的文字負責，alt 留空避免重複朗讀 */}
+      <img
+        class="hdr__logo"
+        src="/assets/logo-mark.webp"
+        alt=""
+        width="531"
+        height="427"
+      />
       <span class="hdr__name">{site.name}</span>
-      <span class="hdr__en kicker">{site.nameEn}</span>
     </a>
 
     <nav class="hdr__nav" aria-label="區塊導覽">
@@ -50,15 +49,17 @@ import { site, nav } from '../data/site';
     margin-right: auto;
   }
 
-  .hdr__mark { align-self: center; }
+  .hdr__logo {
+    align-self: center;
+    height: 26px;
+    width: auto;
+  }
 
   .hdr__name {
     font-weight: 800;
     letter-spacing: -.01em;
     white-space: nowrap;
   }
-
-  .hdr__en { font-size: 9px; white-space: nowrap; }
 
   .hdr__nav {
     display: flex;
@@ -69,6 +70,7 @@ import { site, nav } from '../data/site';
 
   .hdr__nav a {
     padding-bottom: 2px;
+    white-space: nowrap;
     border-bottom: 1px solid transparent;
     transition: color var(--dur-fast) var(--ease),
                 border-color var(--dur-fast) var(--ease);
@@ -94,11 +96,6 @@ import { site, nav } from '../data/site';
   .hdr__tg:focus-visible {
     background: var(--highlight);
     border-color: var(--ink);
-  }
-
-  /* 容器只有 820px，英文標在導航擠壓下會折行，中等寬度先收掉 */
-  @media (max-width: 900px) {
-    .hdr__en { display: none; }
   }
 
   @media (max-width: 760px) {

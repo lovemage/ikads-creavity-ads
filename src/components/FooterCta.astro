@@ -22,7 +22,8 @@ import { site } from '../data/site';
 
     <div class="foot__bar">
       <p class="foot__copy">
-        © {site.year} {site.name}　{site.nameEn}
+        <img class="foot__logo" src="/assets/logo-mark.webp" alt="" width="531" height="427" />
+        <span>© {site.year} {site.name}　{site.nameEn}</span>
       </p>
       <nav class="foot__links" aria-label="法律文件">
         <a href="/privacy">隱私權政策</a>
@@ -84,6 +85,14 @@ import { site } from '../data/site';
     color: var(--text-3);
     letter-spacing: .04em;
   }
+
+  .foot__copy {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .foot__logo { height: 20px; width: auto; opacity: .55; }
 
   .foot__links { display: flex; gap: 20px; }
 
