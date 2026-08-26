@@ -1,0 +1,51 @@
+/* 設計令牌 — PLAN.md §2.2 一佳專屬覆寫 ＋ design.md §3 */
+:root {
+  /* 色彩 */
+  --bg:               #F7F7F7;   /* 覆寫：取自 logo 版面底色，非純白 */
+  --bg-card:          #FFFFFF;   /* 卡片維持純白，直角下靠色差分層 */
+  --ink:              #1A1A1A;
+  --text-2:           #555555;
+  --text-3:           #999999;
+  --line:             #E8E8E8;
+  --brand:            #FFD248;   /* logo 黃：字標星芒、主 CTA */
+  --highlight:        #FFE28A;   /* 螢光筆標記、光暈、Hover 填色 */
+  --illustration-bg:  #F9F0D8;
+
+  /* 網格線：底色改 #F7F7F7 後從 .03 加深，否則在灰底上看不見 */
+  --grid-line:        rgba(0, 0, 0, .045);
+
+  /* 形狀 */
+  --radius:           0;         /* 全站無例外 */
+  --border:           1px solid var(--line);
+
+  /* 陰影：直角下遠處陰影降階，避免過重 */
+  --shadow-hover:     0 3px 6px rgba(0, 0, 0, .04),
+                      0 20px 40px -18px rgba(0, 0, 0, .14);
+
+  /* 動效 */
+  --ease:             cubic-bezier(.19, 1, .22, 1);
+  --spring:           cubic-bezier(.34, 1.56, .64, 1);
+  --dur-fast:         .45s;
+  --dur-base:         .8s;
+  --dur-slow:         1.5s;
+
+  /* 字體 */
+  --font-sans:        "Helvetica Neue", -apple-system, BlinkMacSystemFont,
+                      "PingFang TC", "Noto Sans TC", "Noto Sans CJK TC",
+                      "Microsoft JhengHei", "Source Han Sans TC",
+                      sans-serif;
+  --font-mono:        ui-monospace, SFMono-Regular, "SF Mono", Menlo,
+                      Consolas, monospace;
+
+  /* 佈局 */
+  --container:        820px;
+  --pad-x:            32px;
+  --section-y:        12vh;
+}
+
+@media (max-width: 760px) {
+  :root {
+    --pad-x:     20px;
+    --section-y: 8vh;
+  }
+}

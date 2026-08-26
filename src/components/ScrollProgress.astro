@@ -1,0 +1,53 @@
+---
+/* design.md §10.4：桌面左側 2×120px 竖軌 ＋ 兩位百分比，手機隱藏 */
+---
+
+<div class="progress" aria-hidden="true">
+  <div class="progress__track">
+    <div class="progress__bar" data-progress-bar></div>
+  </div>
+  <span class="progress__num num" data-progress-num>00</span>
+</div>
+
+<style>
+  .progress {
+    position: fixed;
+    left: 28px;
+    top: 50%;
+    translate: 0 -50%;
+    z-index: 30;
+    display: grid;
+    justify-items: center;
+    gap: 10px;
+    pointer-events: none;
+  }
+
+  .progress__track {
+    width: 2px;
+    height: 120px;
+    background: var(--line);
+  }
+
+  .progress__bar {
+    width: 100%;
+    height: 100%;
+    background: var(--ink);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform .12s linear;
+  }
+
+  .progress__num {
+    font-size: 10px;
+    letter-spacing: .12em;
+    color: var(--text-3);
+  }
+
+  @media (max-width: 760px) {
+    .progress { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .progress__bar { transition: none; }
+  }
+</style>

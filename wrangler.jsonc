@@ -1,0 +1,10 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ikads-creavity-ads",
+  "compatibility_date": "2026-08-25",
+  // 純靜態資產 Worker，不需要 main 進入點
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  }
+}

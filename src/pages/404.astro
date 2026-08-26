@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+---
+
+<Base title={`找不到這一頁｜${site.name}`} description="這個網址不存在，回首頁看看服務內容與方案價格。">
+  <section class="nf section">
+    <div class="container">
+      <p class="kicker">404 ／ NOT FOUND</p>
+      <h1 class="nf__title">找不到這一頁</h1>
+      <p class="nf__text">
+        網址可能打錯了，或這一頁已經移除。服務內容、方案價格和常見問題都在首頁。
+      </p>
+      <p class="nf__actions">
+        <a class="cta" href="/">回首頁</a>
+        <a class="cta cta--ghost" href={site.telegram} target="_blank" rel="noopener">
+          Telegram 洽詢
+        </a>
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf { min-height: 60vh; display: flex; align-items: center; }
+
+  .nf__title {
+    font-size: clamp(40px, 8vw, 88px);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -.04em;
+    margin: 10px 0 16px;
+  }
+
+  .nf__text { color: var(--text-2); max-width: 40ch; margin-bottom: 30px; }
+
+  .nf__actions { display: flex; flex-wrap: wrap; gap: 12px; }
+</style>

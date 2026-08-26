@@ -1,0 +1,91 @@
+/* 統一卡片基類 — design.md §12
+   負責邊框、0 圓角、Hover 位移、雙層陰影、focus-within、reduced-motion。
+   各 section 元件只寫內容排版，不重複實作 Hover 邏輯。 */
+
+.card {
+  position: relative;
+  background: var(--bg-card);
+  border: var(--border);
+  border-radius: var(--radius);
+  transition:
+    transform    var(--dur-fast) var(--ease),
+    border-color var(--dur-fast) var(--ease),
+    box-shadow   var(--dur-fast) var(--ease);
+}
+
+.card:hover,
+.card:focus-within {
+  transform: translateY(-5px);
+  border-color: #D8D8D8;
+  box-shadow: var(--shadow-hover);
+}
+
+/* 插畫：drop-shadow 跟隨透明輪廓，不給容器加矩形陰影（design.md §9.4） */
+.card__art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 18px rgba(0, 0, 0, .10));
+  transform: rotate(1deg);
+  transition:
+    transform var(--dur-base) var(--ease),
+    filter    var(--dur-base) var(--ease);
+}
+
+.card:hover .card__art,
+.card:focus-within .card__art {
+  transform: translateY(-8px) scale(1.05) rotate(0deg);
+  filter: drop-shadow(0 18px 26px rgba(0, 0, 0, .14));
+}
+
+/* 標題螢光筆標記：預設寬 0，Hover 由左向右展開（design.md §10.5） */
+.mark {
+  position: relative;
+  display: inline;
+  background-image: linear-gradient(var(--highlight), var(--highlight));
+  background-repeat: no-repeat;
+  background-position: 0 88%;
+  background-size: 0% .42em;
+  transition: background-size var(--dur-base) var(--ease);
+}
+
+.card:hover .mark,
+.card:focus-within .mark,
+.mark--on { background-size: 100% .42em; }
+
+/* 方形外鏈按鈕：圓形改 28×28 直角，Hover 填黃（PLAN.md §2.2①） */
+.sq-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: var(--border);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--ink);
+  transition:
+    background var(--dur-fast) var(--ease),
+    transform  var(--dur-fast) var(--ease);
+}
+
+.card:hover .sq-btn,
+.card:focus-within .sq-btn {
+  background: var(--highlight);
+  transform: translate(2px, -2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .card__art,
+  .mark,
+  .sq-btn { transition-duration: 10ms; }
+
+  .card:hover,
+  .card:focus-within { transform: none; }
+
+  .card__art { transform: none; }
+
+  .card:hover .card__art,
+  .card:focus-within .card__art { transform: none; }
+}

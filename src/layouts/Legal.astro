@@ -1,0 +1,83 @@
+---
+import Base from './Base.astro';
+import { site } from '../data/site';
+
+interface Props {
+  frontmatter: { title: string; description: string };
+}
+
+const { frontmatter } = Astro.props;
+---
+
+<Base title={`${frontmatter.title}｜${site.name}`} description={frontmatter.description}>
+  <article class="legal section">
+    <div class="container">
+      <p class="kicker">LEGAL</p>
+      <h1 class="legal__h1">{frontmatter.title}</h1>
+      <div class="legal__body">
+        <slot />
+      </div>
+      <p class="legal__back">
+        <a class="cta cta--ghost" href="/">回首頁</a>
+      </p>
+    </div>
+  </article>
+</Base>
+
+<style is:global>
+  .legal__h1 {
+    font-size: clamp(34px, 5vw, 48px);
+    font-weight: 900;
+    line-height: .98;
+    letter-spacing: -.035em;
+    margin: 10px 0 34px;
+  }
+
+  .legal__body { max-width: 62ch; }
+
+  .legal__body h2 {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -.02em;
+    line-height: 1.4;
+    margin: 40px 0 10px;
+    padding-top: 20px;
+    border-top: var(--border);
+  }
+
+  .legal__body h2:first-of-type { border-top: 0; padding-top: 0; }
+
+  .legal__body p { color: var(--text-2); margin-bottom: 14px; }
+
+  .legal__body strong { color: var(--ink); font-weight: 700; }
+
+  .legal__body ol,
+  .legal__body ul {
+    color: var(--text-2);
+    padding-left: 1.4em;
+    margin-bottom: 14px;
+  }
+
+  .legal__body ol { list-style: decimal; }
+
+  .legal__body ul { list-style: disc; }
+
+  .legal__body li { margin-bottom: 6px; }
+
+  .legal__body code {
+    font-family: var(--font-mono);
+    font-size: .92em;
+    background: var(--bg-card);
+    border: var(--border);
+    padding: 1px 5px;
+  }
+
+  .legal__body a {
+    border-bottom: 1px solid var(--line);
+    transition: border-color var(--dur-fast) var(--ease);
+  }
+
+  .legal__body a:hover { border-bottom-color: var(--ink); }
+
+  .legal__back { margin-top: 52px; }
+</style>

@@ -1,0 +1,84 @@
+---
+import GhostNumber from './GhostNumber.astro';
+import { services, servicesLead } from '../data/services';
+---
+
+<section class="section" id="services">
+  <GhostNumber n="01" />
+  <div class="container">
+    <p class="kicker">N°01 ／ SERVICES</p>
+    <h2 class="section-title">我們負責哪些事</h2>
+    <p class="section-lead">{servicesLead}</p>
+
+    <ul class="svc">
+      {services.map((s) => (
+        <li class="card svc__item reveal">
+          <div class="svc__body">
+            <p class="svc__no num">{s.no}</p>
+            <h3 class="svc__title"><span class="mark">{s.title}</span></h3>
+            <p class="svc__text">{s.body}</p>
+          </div>
+          {s.art && (
+            <div class="svc__art">
+              <img class="card__art" src={s.art} alt={s.alt} width="1024" height="1024" loading="lazy" />
+            </div>
+          )}
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .svc { display: grid; gap: 18px; }
+
+  .svc__item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 24px;
+    padding: 28px 24px;
+    min-height: 168px;
+  }
+
+  .svc__no {
+    font-size: 11px;
+    letter-spacing: .18em;
+    color: var(--text-3);
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+
+  .svc__title {
+    font-size: clamp(30px, 3.6vw, 42px);
+    font-weight: 900;
+    line-height: .96;
+    letter-spacing: -.055em;
+    margin-bottom: 12px;
+  }
+
+  .svc__text {
+    max-width: 44ch;
+    color: var(--text-2);
+  }
+
+  /* 桌面允許插圖越出卡片，手機裁切（design.md §9.4） */
+  .svc__art {
+    width: clamp(120px, 16vw, 190px);
+    aspect-ratio: 1;
+    margin-block: -18px;
+  }
+
+  @media (max-width: 760px) {
+    .svc__item {
+      grid-template-columns: 1fr;
+      padding: 24px 20px;
+      overflow: hidden;
+    }
+
+    .svc__art {
+      width: 130px;
+      margin: 0 auto -8px;
+    }
+  }
+</style>

@@ -1,0 +1,108 @@
+---
+import GhostNumber from './GhostNumber.astro';
+import { faqs } from '../data/faq';
+---
+
+<section class="section" id="faq">
+  <GhostNumber n="05" />
+  <div class="container">
+    <p class="kicker">N°05 ／ FAQ</p>
+    <h2 class="section-title">常見問題</h2>
+
+    <ul class="faq">
+      {faqs.map((f, i) => (
+        <li class="faq__item reveal">
+          {/* 原生 details，手風琴不需要 JS */}
+          <details class="faq__d">
+            <summary class="faq__q">
+              <span class="faq__no num">{String(i + 1).padStart(2, '0')}</span>
+              <span class="faq__text">{f.q}</span>
+              <span class="faq__sign" aria-hidden="true"></span>
+            </summary>
+            <div class="faq__a">
+              {f.a.map((p) => <p set:html={p} />)}
+            </div>
+          </details>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .faq { position: relative; z-index: 1; }
+
+  .faq__item { border-top: var(--border); }
+
+  .faq__item:last-child { border-bottom: var(--border); }
+
+  .faq__q {
+    display: grid;
+    grid-template-columns: 44px 1fr 20px;
+    align-items: start;
+    gap: 12px;
+    padding: 20px 0;
+    cursor: pointer;
+    list-style: none;
+    font-weight: 700;
+    font-size: 17px;
+    line-height: 1.5;
+    letter-spacing: -.01em;
+    transition: color var(--dur-fast) var(--ease);
+  }
+
+  .faq__q::-webkit-details-marker { display: none; }
+
+  .faq__q:hover { color: var(--text-2); }
+
+  .faq__no {
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: .16em;
+    color: var(--text-3);
+    padding-top: 5px;
+  }
+
+  /* 直角加號，展開轉為減號 */
+  .faq__sign {
+    position: relative;
+    width: 14px;
+    height: 14px;
+    margin-top: 7px;
+  }
+
+  .faq__sign::before,
+  .faq__sign::after {
+    content: '';
+    position: absolute;
+    background: var(--ink);
+    transition: transform var(--dur-fast) var(--ease),
+                opacity var(--dur-fast) var(--ease);
+  }
+
+  .faq__sign::before { inset: 6px 0 auto; height: 2px; }
+
+  .faq__sign::after { inset: 0 6px auto; width: 2px; height: 14px; }
+
+  .faq__d[open] .faq__sign::after { transform: scaleY(0); opacity: 0; }
+
+  .faq__a {
+    grid-column: 2;
+    padding: 0 20px 22px 56px;
+    color: var(--text-2);
+    max-width: 62ch;
+  }
+
+  .faq__a p + p { margin-top: 12px; }
+
+  @media (max-width: 760px) {
+    .faq__q { grid-template-columns: 32px 1fr 18px; gap: 8px; font-size: 16px; }
+    .faq__a { padding-left: 40px; padding-right: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .faq__q,
+    .faq__sign::before,
+    .faq__sign::after { transition-duration: 10ms; }
+  }
+</style>

@@ -1,0 +1,35 @@
+# 環境變數（含 Cloudflare API Token，絕不進版控）
+.env
+.env.*
+!.env.example
+
+# 相依套件
+node_modules/
+
+# 建置產物
+dist/
+.astro/
+.wrangler/
+
+# 系統
+.DS_Store
+Thumbs.db
+*.log
+
+# astro
+node_modules/
+dist/
+.astro/
+
+# 素材原始檔：codex 產出的 PNG 由 npm run assets 轉成 WebP，
+# 只有 WebP 進版控，原始檔留在本機 plan_asset/generated/
+public/assets/*.png
+plan_asset/generated/
+
+# 內部規劃文件與業主原始素材，不進公開倉庫
+plan_asset/
+PLAN.md
+CLAUDE.md
+design.md
+image_prompts.md
+copy/

@@ -1,0 +1,113 @@
+---
+/* design.md §6.1：仿圖紙標題欄，存在感低 */
+import { site, nav } from '../data/site';
+---
+
+<header class="hdr">
+  <div class="container hdr__inner">
+    <a class="hdr__brand" href="#main">
+      <span class="hdr__mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none">
+          <path
+            d="M12 1.5 13.9 8.2 20.5 12 13.9 15.8 12 22.5 10.1 15.8 3.5 12 10.1 8.2Z"
+            fill="var(--brand)"
+          />
+        </svg>
+      </span>
+      <span class="hdr__name">{site.name}</span>
+      <span class="hdr__en kicker">{site.nameEn}</span>
+    </a>
+
+    <nav class="hdr__nav" aria-label="區塊導覽">
+      {nav.map((item) => <a href={item.href}>{item.label}</a>)}
+    </nav>
+
+    <a class="hdr__tg" href={site.telegram} target="_blank" rel="noopener">
+      Telegram
+    </a>
+  </div>
+</header>
+
+<style>
+  .hdr {
+    position: relative;
+    z-index: 20;
+    padding-top: 34px;
+    border-bottom: var(--border);
+  }
+
+  .hdr__inner {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding-bottom: 14px;
+  }
+
+  .hdr__brand {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-right: auto;
+  }
+
+  .hdr__mark { align-self: center; }
+
+  .hdr__name {
+    font-weight: 800;
+    letter-spacing: -.01em;
+    white-space: nowrap;
+  }
+
+  .hdr__en { font-size: 9px; white-space: nowrap; }
+
+  .hdr__nav {
+    display: flex;
+    gap: 22px;
+    font-size: 13px;
+    color: var(--text-2);
+  }
+
+  .hdr__nav a {
+    padding-bottom: 2px;
+    border-bottom: 1px solid transparent;
+    transition: color var(--dur-fast) var(--ease),
+                border-color var(--dur-fast) var(--ease);
+  }
+
+  .hdr__nav a:hover,
+  .hdr__nav a:focus-visible {
+    color: var(--ink);
+    border-bottom-color: var(--ink);
+  }
+
+  .hdr__tg {
+    font-size: 13px;
+    font-weight: 700;
+    padding: 6px 12px;
+    border: var(--border);
+    border-radius: var(--radius);
+    transition: background var(--dur-fast) var(--ease),
+                border-color var(--dur-fast) var(--ease);
+  }
+
+  .hdr__tg:hover,
+  .hdr__tg:focus-visible {
+    background: var(--highlight);
+    border-color: var(--ink);
+  }
+
+  /* 容器只有 820px，英文標在導航擠壓下會折行，中等寬度先收掉 */
+  @media (max-width: 900px) {
+    .hdr__en { display: none; }
+  }
+
+  @media (max-width: 760px) {
+    .hdr { padding-top: 22px; }
+    .hdr__nav { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hdr__nav a,
+    .hdr__tg { transition-duration: 10ms; }
+  }
+</style>

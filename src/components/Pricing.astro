@@ -1,0 +1,192 @@
+---
+import GhostNumber from './GhostNumber.astro';
+import LandingPageAddon from './LandingPageAddon.astro';
+import { regions, features, currency, cycle, planGap } from '../data/pricing';
+---
+
+<section class="section" id="pricing">
+  <GhostNumber n="02" />
+  <div class="container">
+    <p class="kicker">N°02 ／ PRICING</p>
+    <h2 class="section-title">方案與價格</h2>
+    <p class="section-lead">
+      下面列的都是<strong>月服務費</strong>，單月計。<strong
+        >廣告實際花掉的錢（媒體費）不含在裡面</strong
+      >，由你另外儲值。
+    </p>
+
+    {/* 區域切換：CSS-only radio，不寫 JS */}
+    <div class="pricing">
+      {regions.map((r, i) => (
+        <input
+          class="visually-hidden pricing__radio"
+          type="radio"
+          name="region"
+          id={`region-${r.key}`}
+          checked={i === 0}
+        />
+      ))}
+
+      <div class="pricing__switch" role="group" aria-label="服務區域">
+        {regions.map((r) => (
+          <label class="pricing__tab" for={`region-${r.key}`}>
+            <span>{r.label}</span>
+            <span class="kicker pricing__tab-en">{r.labelEn}</span>
+          </label>
+        ))}
+      </div>
+
+      <div class="pricing__panels">
+        {regions.map((r) => (
+          <div class="pricing__panel" data-region={r.key}>
+            <div class="pricing__cards">
+              {r.plans.map((p) => (
+                <article class="card plan reveal">
+                  <p class="kicker">{p.key === 'full' ? 'FULL SERVICE' : 'BYO CREATIVE'}</p>
+                  <h3 class="plan__name">{p.name}</h3>
+                  <p class="plan__price">
+                    <span class="num plan__amount">{p.price}</span>
+                    <span class="plan__unit num">{currency}</span>
+                    <span class="plan__cycle">{cycle}</span>
+                  </p>
+                  <p class="plan__summary">{p.summary}</p>
+
+                  <ul class="plan__features">
+                    {features.map((f) => {
+                      const on = p.key === 'full' ? f.full : f.self;
+                      return (
+                        <li class:list={['plan__feature', { 'is-off': !on }]}>
+                          <span class="plan__tick" aria-hidden="true">{on ? '✓' : '—'}</span>
+                          <span>{f.label}</span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </article>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <p class="pricing__gap">
+        兩個方案固定差 <span class="num">{planGap}</span> U，差別只在素材和文案由誰產出。其他項目一模一樣。
+      </p>
+    </div>
+
+    <LandingPageAddon />
+  </div>
+</section>
+
+<style>
+  .pricing { position: relative; z-index: 1; }
+
+  .pricing__switch {
+    display: inline-flex;
+    border: 1px solid var(--ink);
+    border-radius: var(--radius);
+    margin-bottom: 26px;
+  }
+
+  .pricing__tab {
+    display: grid;
+    justify-items: center;
+    gap: 2px;
+    padding: 10px 26px;
+    cursor: pointer;
+    line-height: 1.2;
+    color: var(--text-2);
+    transition: background var(--dur-fast) var(--ease),
+                color var(--dur-fast) var(--ease);
+  }
+
+  .pricing__tab + .pricing__tab { border-left: 1px solid var(--ink); }
+
+  .pricing__tab-en { font-size: 9px; }
+
+  /* 作用中狀態：整格直角背景色塊填滿 ＋ 文字加深。不用左側強調邊框。 */
+  #region-tw:checked ~ .pricing__switch .pricing__tab[for="region-tw"],
+  #region-hk:checked ~ .pricing__switch .pricing__tab[for="region-hk"] {
+    background: var(--highlight);
+    color: var(--ink);
+    font-weight: 800;
+  }
+
+  .pricing__panel { display: none; }
+
+  #region-tw:checked ~ .pricing__panels .pricing__panel[data-region="tw"],
+  #region-hk:checked ~ .pricing__panels .pricing__panel[data-region="hk"] {
+    display: block;
+  }
+
+  .pricing__cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+
+  .plan { padding: 28px 24px; }
+
+  .plan__name {
+    font-size: clamp(36px, 5vw, 54px);
+    font-weight: 900;
+    line-height: .98;
+    letter-spacing: -.04em;
+    margin: 8px 0 14px;
+  }
+
+  .plan__price {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    margin-bottom: 14px;
+  }
+
+  /* 換值時彈出（PLAN.md §3） */
+  .plan__amount {
+    font-size: 44px;
+    font-weight: 700;
+    line-height: 1;
+    animation: pop .5s var(--spring);
+  }
+
+  @keyframes pop {
+    from { scale: .82; opacity: .4; }
+    to   { scale: 1; opacity: 1; }
+  }
+
+  .plan__unit { font-size: 18px; font-weight: 700; }
+
+  .plan__cycle { font-size: 13px; color: var(--text-3); }
+
+  .plan__summary {
+    color: var(--text-2);
+    padding-bottom: 18px;
+    border-bottom: var(--border);
+    margin-bottom: 16px;
+  }
+
+  .plan__features { display: grid; gap: 6px; font-size: 13px; line-height: 1.6; }
+
+  .plan__feature { display: grid; grid-template-columns: 18px 1fr; gap: 6px; }
+
+  .plan__tick { font-weight: 700; }
+
+  .plan__feature.is-off { color: var(--text-3); }
+
+  .pricing__gap {
+    margin-top: 18px;
+    font-size: 13px;
+    color: var(--text-3);
+  }
+
+  @media (max-width: 760px) {
+    .pricing__cards { grid-template-columns: 1fr; }
+    .plan { padding: 24px 20px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .plan__amount { animation: none; }
+    .pricing__tab { transition-duration: 10ms; }
+  }
+</style>

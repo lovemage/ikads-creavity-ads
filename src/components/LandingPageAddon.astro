@@ -1,0 +1,53 @@
+---
+import { landingPage } from '../data/pricing';
+---
+
+<aside class="card addon reveal">
+  <div class="addon__text">
+    <p class="kicker">ADD-ON</p>
+    <h3 class="addon__title">廣告落地頁製作</h3>
+    <p class="addon__note">{landingPage.note}</p>
+  </div>
+  <p class="addon__price">
+    <span class="num addon__amount">{landingPage.priceFrom}</span>
+    <span class="num addon__unit">{landingPage.currency}</span>
+    <span class="addon__from">起</span>
+  </p>
+</aside>
+
+<style>
+  /* 視覺層級低一階：單行橫幅卡，不做成第三張同級方案卡 */
+  .addon {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 20px;
+    padding: 22px 24px;
+    margin-top: 18px;
+  }
+
+  .addon__title {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -.02em;
+    margin: 4px 0 6px;
+  }
+
+  .addon__note {
+    font-size: 13px;
+    color: var(--text-2);
+    max-width: 48ch;
+  }
+
+  .addon__price { display: flex; align-items: baseline; gap: 4px; }
+
+  .addon__amount { font-size: 32px; font-weight: 700; line-height: 1; }
+
+  .addon__unit { font-size: 14px; font-weight: 700; }
+
+  .addon__from { font-size: 13px; color: var(--text-3); }
+
+  @media (max-width: 760px) {
+    .addon { grid-template-columns: 1fr; padding: 20px; }
+  }
+</style>

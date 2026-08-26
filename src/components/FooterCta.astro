@@ -1,0 +1,110 @@
+---
+import { site } from '../data/site';
+---
+
+<footer class="foot">
+  <div class="container foot__inner">
+    <span class="foot__ghost" aria-hidden="true">IK</span>
+
+    <div class="foot__cta reveal">
+      <h2 class="foot__title">要投放，先來 Telegram 說一下你的情況</h2>
+      <p class="foot__text">
+        告訴我們區域、預算規模、素材有沒有現成的，我們回你適用哪個方案、多久能上線。
+      </p>
+      <a class="cta" href={site.telegram} target="_blank" rel="noopener">
+        Telegram 洽詢
+        <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+          <path d="M2 8h11M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none" />
+        </svg>
+      </a>
+      <p class="foot__handle kicker">{site.telegramHandle}</p>
+    </div>
+
+    <div class="foot__bar">
+      <p class="foot__copy">
+        © {site.year} {site.name}　{site.nameEn}
+      </p>
+      <nav class="foot__links" aria-label="法律文件">
+        <a href="/privacy">隱私權政策</a>
+        <a href="/terms">服務條款</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .foot {
+    position: relative;
+    padding-block: var(--section-y) 40px;
+    overflow: hidden;
+  }
+
+  .foot__inner { position: relative; }
+
+  .foot__ghost {
+    position: absolute;
+    right: -.06em;
+    bottom: 46px;
+    z-index: 0;
+    font-family: var(--font-mono);
+    font-size: clamp(170px, 32vw, 320px);
+    font-weight: 900;
+    line-height: .78;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--line);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .foot__cta { position: relative; z-index: 1; max-width: 30ch; }
+
+  .foot__title {
+    font-size: clamp(30px, 4.4vw, 44px);
+    font-weight: 900;
+    line-height: 1.06;
+    letter-spacing: -.035em;
+    margin-bottom: 14px;
+  }
+
+  .foot__text { color: var(--text-2); margin-bottom: 26px; }
+
+  .foot__handle { margin-top: 14px; font-size: 10px; }
+
+  .foot__bar {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 12vh;
+    padding-top: 20px;
+    border-top: var(--border);
+    font-size: 12px;
+    color: var(--text-3);
+    letter-spacing: .04em;
+  }
+
+  .foot__links { display: flex; gap: 20px; }
+
+  .foot__links a {
+    border-bottom: 1px solid transparent;
+    transition: color var(--dur-fast) var(--ease),
+                border-color var(--dur-fast) var(--ease);
+  }
+
+  .foot__links a:hover,
+  .foot__links a:focus-visible {
+    color: var(--ink);
+    border-bottom-color: var(--ink);
+  }
+
+  @media (max-width: 760px) {
+    .foot__ghost { bottom: 90px; }
+    .foot__bar { margin-top: 8vh; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .foot__links a { transition-duration: 10ms; }
+  }
+</style>

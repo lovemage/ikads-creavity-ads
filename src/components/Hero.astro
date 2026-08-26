@@ -1,0 +1,175 @@
+---
+import { site } from '../data/site';
+---
+
+<section class="hero">
+  <div class="container">
+    <p class="hero__kicker kicker">
+      <span>TAIWAN ／ HONG KONG</span>
+      <span aria-hidden="true">·</span>
+      <span>FB ／ IG</span>
+      <span aria-hidden="true">·</span>
+      <span>USDT</span>
+    </p>
+
+    <h1 class="hero__title">
+      <span class="hero__line"><span>Facebook</span></span>
+      <span class="hero__line"><span>Instagram</span></span>
+      <span class="hero__line hero__line--zh"><span>代你投</span></span>
+    </h1>
+
+    <p class="hero__lead">
+      廣告帳戶和支付卡由我們提供，素材跟文案可以你給、也可以我們做。台灣、香港，月費以
+      <span class="num">USDT</span> 計。
+    </p>
+
+    <div class="hero__actions">
+      <a class="cta" href={site.telegram} target="_blank" rel="noopener">
+        Telegram 洽詢
+        <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+          <path d="M2 8h11M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none" />
+        </svg>
+      </a>
+      <p class="hero__note">站上不留表單、不收信箱。所有事情在 Telegram 談。</p>
+    </div>
+
+    <img
+      class="hero__person"
+      src="/assets/hero-person.webp"
+      alt="線條插畫，戴眼鏡的人物攤開手掌托著一顆黃色四角星"
+      width="1024"
+      height="1536"
+      fetchpriority="high"
+    />
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 86vh;
+    padding-block: 8vh 4vh;
+    overflow: hidden;
+  }
+
+  .hero .container { position: relative; }
+
+  .hero__kicker {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 26px;
+  }
+
+  /* 每段不可拆字，否則手機上 HONG／KONG 會被拆到兩行 */
+  .hero__kicker span { white-space: nowrap; }
+
+  .hero__title {
+    font-size: clamp(72px, 12vw, 140px);
+    font-weight: 700;
+    line-height: .94;
+    letter-spacing: -.045em;
+  }
+
+  /* 三行從裁切區下方上推（design.md §10.2） */
+  .hero__line {
+    display: block;
+    overflow: hidden;
+  }
+
+  .hero__line > span {
+    display: block;
+    translate: 0 100%;
+    animation: line-up 1.5s var(--ease) forwards;
+  }
+
+  /* 中文字面比拉丁字母高，.94 的行盒裝不下 140px 的中文，
+     會向上溢出壓到前一行。中文行單獨放寬，再用負 margin 收回視覺行距。 */
+  .hero__line--zh {
+    line-height: 1.08;
+    margin-top: -.06em;
+  }
+
+  .hero__line:nth-child(1) > span { animation-delay: .10s; }
+  .hero__line:nth-child(2) > span { animation-delay: .24s; }
+  .hero__line:nth-child(3) > span { animation-delay: .38s; }
+
+  @keyframes line-up { to { translate: 0 0; } }
+
+  .hero__lead {
+    max-width: 40ch;
+    margin-top: 30px;
+    color: var(--text-2);
+    opacity: 0;
+    animation: fade-up 1.4s var(--ease) 1s forwards;
+  }
+
+  .hero__actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-top: 34px;
+    opacity: 0;
+    animation: fade-up 1.4s var(--ease) 1.25s forwards;
+  }
+
+  .hero__note {
+    font-size: 12px;
+    color: var(--text-3);
+    line-height: 1.6;
+    max-width: 22ch;
+  }
+
+  @keyframes fade-up {
+    from { opacity: 0; translate: 0 16px; }
+    to   { opacity: 1; translate: 0 0; }
+  }
+
+  /* 人物壓進標題右側，不另起一行（design.md §6.3） */
+  .hero__person {
+    position: absolute;
+    right: -40px;
+    bottom: -6vh;
+    width: clamp(180px, 26vw, 300px);
+    height: auto;
+    filter: drop-shadow(0 16px 22px rgba(0, 0, 0, .10));
+    opacity: 0;
+    animation: fade-up 1.5s var(--ease) .24s forwards;
+    pointer-events: none;
+  }
+
+  @media (max-width: 760px) {
+    .hero {
+      min-height: 74svh;
+      padding-block: 6vh 3vh;
+    }
+
+    /* Instagram 是最寬的一行，19.5vw 在 390px 上會貼到右邊緣 */
+    .hero__title { font-size: clamp(48px, 17vw, 72px); }
+
+    .hero__kicker { font-size: 10px; gap: 6px; }
+
+    .hero__person {
+      right: -24px;
+      bottom: -2vh;
+      width: clamp(120px, 34vw, 180px);
+    }
+
+    .hero__note { max-width: 100%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__line > span,
+    .hero__lead,
+    .hero__actions,
+    .hero__person {
+      animation-duration: 10ms;
+      animation-delay: 0s;
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+</style>

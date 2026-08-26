@@ -1,0 +1,66 @@
+---
+import GhostNumber from './GhostNumber.astro';
+import { steps, processLead } from '../data/process';
+---
+
+<section class="section" id="process">
+  <GhostNumber n="03" />
+  <div class="container">
+    <p class="kicker">N°03 ／ PROCESS</p>
+    <h2 class="section-title">從洽詢到上線</h2>
+    <p class="section-lead">{processLead}</p>
+
+    <ol class="steps">
+      {steps.map((s) => (
+        <li class="steps__item reveal">
+          <span class="steps__no num">{s.no}</span>
+          <div class="steps__body">
+            <h3 class="steps__title">{s.title}</h3>
+            <p class="steps__text">{s.body}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .steps {
+    position: relative;
+    z-index: 1;
+    display: grid;
+  }
+
+  .steps__item {
+    display: grid;
+    grid-template-columns: 62px 1fr;
+    gap: 18px;
+    padding: 22px 0;
+    border-top: var(--border);
+  }
+
+  .steps__item:last-child { border-bottom: var(--border); }
+
+  .steps__no {
+    font-size: 13px;
+    letter-spacing: .16em;
+    color: var(--text-3);
+    padding-top: 3px;
+  }
+
+  .steps__title {
+    font-size: 19px;
+    font-weight: 800;
+    letter-spacing: -.02em;
+    margin-bottom: 2px;
+  }
+
+  .steps__text {
+    color: var(--text-2);
+    max-width: 52ch;
+  }
+
+  @media (max-width: 760px) {
+    .steps__item { grid-template-columns: 44px 1fr; gap: 12px; }
+  }
+</style>
