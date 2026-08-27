@@ -38,7 +38,7 @@
                       Consolas, monospace;
 
   /* 佈局 */
-  --container:        820px;
+  --container:        864px;   /* 扣掉左右 --pad-x 後，內容寬度 800 */
   --pad-x:            32px;
   --section-y:        12vh;
 }

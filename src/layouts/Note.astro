@@ -195,14 +195,10 @@ const schema = {
 </Base>
 
 <style is:global>
-  /* 文章頁只有一個量度。麵包屑、標題、圖、正文、FAQ、CTA、上下篇
-     全部貼齊這個寬度，右邊界不再跳。 */
-  .note {
-    position: relative;
-    --measure: 62ch;
-  }
-
-  .note .container { max-width: calc(var(--measure) + var(--pad-x) * 2); }
+  /* 文章頁只有一個量度，就是全站的 container 內容寬。
+     麵包屑、標題、圖、正文、FAQ、CTA、上下篇全部貼齊它，
+     各區塊不再自己設 max-width，右邊界才不會跳。 */
+  .note { position: relative; }
 
   .note__crumb {
     display: flex;
