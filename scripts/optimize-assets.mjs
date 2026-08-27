@@ -62,7 +62,12 @@ for (const file of pngs) {
   }
 
   const out = join(SRC, `${name}.webp`);
-  const [w, h] = noteSize(name) ?? SIZES[name] ?? SIZES.default;
+  const note = noteSize(name);
+  const [w, h] = note ?? SIZES[name] ?? SIZES.default;
+
+  // 筆記圖要精確等於版面標的尺寸，寬高比對不上就裁；
+  // 去背素材維持 inside，裁下去會切到輪廓。
+  const fit = note ? 'cover' : 'inside';
 
   // og:image 的 PNG 處理完會留在原地，prebuild 每次都會再掃到它。
   // 已經有一份不比它舊的 WebP，就代表這張做過了，跳過免得反覆重壓。
@@ -77,7 +82,7 @@ for (const file of pngs) {
   const sizeBefore = (await stat(src)).size;
 
   await sharp(src)
-    .resize(w, h, { fit: 'inside', withoutEnlargement: true })
+    .resize(w, h, { fit, withoutEnlargement: true })
     .webp({ quality: 92, effort: 6, alphaQuality: 100 })
     .toFile(out);
 
@@ -88,7 +93,7 @@ for (const file of pngs) {
 
   if (ogTmp) {
     await sharp(src)
-      .resize(w, h, { fit: 'inside', withoutEnlargement: true })
+      .resize(w, h, { fit, withoutEnlargement: true })
       .png({ compressionLevel: 9, palette: true })
       .toFile(ogTmp);
   }

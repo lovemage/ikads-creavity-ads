@@ -29,10 +29,6 @@ slug: meta-ads-operating-rhythm
 
 ## 素材什麼時候該換
 
-<figure>
-  <img src="/assets/note-05-fig.webp" alt="線條插畫，折線圖上標出頻率上升與成效下降的交叉點" width="900" height="600" loading="lazy" />
-  <figcaption>頻率往上、點擊率往下，兩條線交叉的那幾天就是素材該換的時候。</figcaption>
-</figure>
 
 頻率本身不是問題。同一批人七天內看到三次，只要還在轉換，那就繼續跑，不用因為那個數字看起來偏高就先動手換掉一組正在賺錢的素材。
 
@@ -55,6 +51,11 @@ slug: meta-ads-operating-rhythm
 ## 換帳戶的時候別讓資料斷掉
 
 帳戶被關是這個領域的常態，重點在換過去以後接不接得上。
+
+<figure>
+  <img src="/assets/note-05-fig.webp" alt="手繪插畫，戴眼鏡的圓頭人物站在一條淡淡的地面線上" width="900" height="600" loading="lazy" />
+  <figcaption>帳戶換過幾輪，接手處理的人和累積下來的資產沒有跟著換。</figcaption>
+</figure>
 
 有幾件事要在平常就做好。
 

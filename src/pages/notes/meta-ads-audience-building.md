@@ -16,8 +16,8 @@ slug: meta-ads-audience-building
 這樣做前幾天的數字會難看，成本偏高、轉換零星，那是正常的。系統在花錢買資訊，它需要知道什麼樣的人會點、什麼樣的人會轉換。這筆學費省不掉，只能決定要付得有效率還是付得冤枉。
 
 <figure>
-  <img src="/assets/note-04-fig.webp" alt="線條插畫，兩個方框部分重疊，重疊處畫上斜線代表互相搶量" width="900" height="600" loading="lazy" />
-  <figcaption>兩組受眾條件相近的時候，重疊的那塊是自己在跟自己競價。</figcaption>
+  <img src="/assets/note-04-fig.webp" alt="手繪插畫，一個粗線方框裡散落著幾塊不規則的色塊" width="900" height="600" loading="lazy" />
+  <figcaption>受眾範圍是那個框，真正落在裡面的人是散開的。條件疊得越多，框裡剩下的越少。</figcaption>
 </figure>
 
 ## 興趣標籤的實際作用比想像小

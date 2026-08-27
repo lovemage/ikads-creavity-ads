@@ -30,6 +30,7 @@ plan_asset/generated/
 
 # 內部規劃文件與業主原始素材，不進公開倉庫
 plan_asset/
+midjourney-image/
 PLAN.md
 CLAUDE.md
 design.md

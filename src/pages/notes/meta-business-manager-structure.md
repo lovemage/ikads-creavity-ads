@@ -16,8 +16,8 @@ Business Manager 是一個容器，不是一個帳戶。裡面放的東西大致
 人員權限跟資產是分開兩套。一個人被加進 BM 之後，還要一項一項指派他可以碰哪個廣告帳戶、哪個粉專。這兩層權限經常被混在一起設，結果是給了太多人管理員。
 
 <figure>
-  <img src="/assets/note-02-fig.webp" alt="線條插畫，樹狀結構圖，BM 節點往下分出廣告帳戶、粉專、Pixel 三支" width="900" height="600" loading="lazy" />
-  <figcaption>同一個 BM 底下的東西共享同一個風險。上層被關，這幾支全部斷線。</figcaption>
+  <img src="/assets/note-02-fig.webp" alt="手繪流程圖，左側兩個方框各拉出一條線往右匯集，路徑上有兩個黃色菱形" width="900" height="600" loading="lazy" />
+  <figcaption>資產從不同地方接進來，匯在同一個 BM 底下，風險也就綁在一起。</figcaption>
 </figure>
 
 ## 擁有和分享，差在出事那天

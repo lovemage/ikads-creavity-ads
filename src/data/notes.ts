@@ -73,9 +73,9 @@ export const notes: Note[] = [
       'Business Manager 停用',
     ],
     hero: '/assets/note-01-hero',
-    heroAlt: '線條插畫，人物看著四層堆疊的視窗，最上面一層被打了叉',
+    heroAlt: '手繪插畫，戴眼鏡的圓臉人物獨自站在畫面右側，左邊留下一整片空白',
     fig: '/assets/note-01-fig',
-    figAlt: '線條插畫，四個方框由上而下排成一列並以線相連，最上面一個被打叉，往下的連接線轉為虛線',
+    figAlt: '手繪流程圖，幾個方框以箭頭相連成上下兩層，中央一個黃色菱形標出交會點',
     faqs: [
       {
         q: '廣告帳號被停用，申訴大概多久會有回覆？',
@@ -115,9 +115,9 @@ export const notes: Note[] = [
       'Pixel 歸屬',
     ],
     hero: '/assets/note-02-hero',
-    heroAlt: '線條插畫，人物把幾個資產方塊分別放進兩個不相連的容器',
+    heroAlt: '手繪插畫，一疊方塊堆成階梯狀，其中一格填成黃色',
     fig: '/assets/note-02-fig',
-    figAlt: '線條插畫，一個方框往下分出三條線，各自連到一個小方框，其中一個小方框填成黃色',
+    figAlt: '手繪流程圖，左側兩個方框各拉出一條線往右匯集，路徑上有兩個黃色菱形',
     faqs: [
       {
         q: '一定要開 BM 嗎，直接用個人廣告帳戶不行嗎？',
@@ -158,9 +158,9 @@ export const notes: Note[] = [
       '彙總事件評估',
     ],
     hero: '/assets/note-03-hero',
-    heroAlt: '線條插畫，人物在網頁框上安裝一個像素方塊，旁邊另一條線繞過瀏覽器直接連到伺服器',
+    heroAlt: '手繪工程圖紙，方框、虛線與網格交錯，邊角壓著幾塊黃色色塊',
     fig: '/assets/note-03-fig',
-    figAlt: '線條插畫，兩條路徑從左側匯聚到右側同一個方框，匯聚點上有一個黃色小菱形',
+    figAlt: '手繪流程圖，左邊方框拉出兩條線，各自經過一個菱形後接進右邊的方框，右邊方框半邊填黃',
     faqs: [
       {
         q: '只裝 Pixel 不裝 Conversions API，差多少？',
@@ -201,9 +201,9 @@ export const notes: Note[] = [
       '學習階段',
     ],
     hero: '/assets/note-04-hero',
-    heroAlt: '線條插畫，人物站在三個大小不同的同心方框前，手指著中間那一圈',
+    heroAlt: '手繪插畫，戴眼鏡的人物站在空曠的畫面中央',
     fig: '/assets/note-04-fig',
-    figAlt: '線條插畫，兩個方框部分重疊，重疊處畫上斜線代表互相搶量',
+    figAlt: '手繪插畫，一個粗線方框裡散落著幾塊不規則的色塊',
     faqs: [
       {
         q: '新帳戶什麼資料都沒有，第一組受眾怎麼設？',
@@ -244,9 +244,9 @@ export const notes: Note[] = [
       'Advantage+ 廣告系列',
     ],
     hero: '/assets/note-05-hero',
-    heroAlt: '線條插畫，人物把一疊素材卡片從舊的容器移到新的容器，中間的線沒有斷',
+    heroAlt: '手繪插畫，一輪黃色圓日掛在細線畫成的地平線上方',
     fig: '/assets/note-05-fig',
-    figAlt: '線條插畫，折線圖上標出頻率上升與成效下降的交叉點',
+    figAlt: '手繪插畫，戴眼鏡的圓頭人物站在一條淡淡的地面線上',
     faqs: [
       {
         q: '一組廣告要跑多久才知道行不行？',

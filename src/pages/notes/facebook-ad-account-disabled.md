@@ -18,8 +18,8 @@ slug: facebook-ad-account-disabled
 **個人帳號被停用**是最上面那一層。管理員的個人帳號一旦被關，他名下管理的 BM 和廣告帳戶會跟著失去操作者。如果那個 BM 只有他一個管理員，情況等同全部鎖死。
 
 <figure>
-  <img src="/assets/note-01-fig.webp" alt="線條插畫，四個方框由上而下排成一列，標示個人帳號、BM、粉專、廣告帳戶的連坐關係" width="900" height="600" loading="lazy" />
-  <figcaption>連坐是往下傳的。上層被關，下層一起進不去；下層被關，上層通常還在。</figcaption>
+  <img src="/assets/note-01-fig.webp" alt="手繪流程圖，幾個方框以箭頭相連成上下兩層，中央一個黃色菱形標出交會點" width="900" height="600" loading="lazy" />
+  <figcaption>連坐往下傳。上層被關，底下接著的全部進不去。</figcaption>
 </figure>
 
 連坐的方向要記住。上層出事會往下掃，下層出事通常不會往上燒。所以個人帳號的安全順位其實排在最前面，很多人卻只盯著廣告帳戶看。

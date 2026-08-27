@@ -59,7 +59,7 @@ Pixel 和 CAPI 同時開著，同一筆購買會送兩次。這是設計上就�
 去重靠 `event_id`。瀏覽器端和伺服器端針對同一次轉換產生同一組 `event_id`，`event_name` 也一致，Meta 會自動判定為同一筆，保留先到的那一個。
 
 <figure>
-  <img src="/assets/note-03-fig.webp" alt="線條插畫，兩條路徑從左側匯聚到右側同一個方框，匯聚點上有一個黃色小菱形" width="900" height="600" loading="lazy" />
+  <img src="/assets/note-03-fig.webp" alt="手繪流程圖，左邊方框拉出兩條線，各自經過一個菱形後接進右邊的方框，右邊方框半邊填黃" width="900" height="600" loading="lazy" />
   <figcaption>兩條路各送一次，匯流處靠同一組 event_id 判定是不是同一筆。</figcaption>
 </figure>
 
