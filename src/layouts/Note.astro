@@ -1,0 +1,500 @@
+---
+/**
+ * 一佳廣告筆記的文章版型。
+ * 正文寫在 src/pages/notes/<slug>.md，frontmatter 只給 layout 與 slug，
+ * 標題、描述、FAQ、圖片全部從 src/data/notes.ts 依 slug 取，避免兩邊各寫一份。
+ */
+import Base from './Base.astro';
+import { site } from '../data/site';
+import { notes, noteBySlug, notesMeta } from '../data/notes';
+
+interface Props {
+  frontmatter: { slug: string };
+}
+
+const { frontmatter } = Astro.props;
+const note = noteBySlug(frontmatter.slug);
+
+if (!note) {
+  throw new Error(
+    `src/data/notes.ts 裡找不到 slug「${frontmatter.slug}」，Markdown 的 frontmatter 與資料檔對不起來。`,
+  );
+}
+
+const url = new URL(`/notes/${note.slug}`, site.url).href;
+const heroPng = new URL(`${note.hero}.png`, site.url).href;
+
+const dateLabel = note.date.replace(/^(\d{4})-(\d{2})-(\d{2})$/, '$1 年 $2 月 $3 日');
+
+const idx = notes.findIndex((n) => n.slug === note.slug);
+const prev = notes[idx - 1];
+const next = notes[idx + 1];
+
+/* BlogPosting、FAQPage、BreadcrumbList 三組結構化資料 */
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'BlogPosting',
+      '@id': `${url}#article`,
+      headline: note.title,
+      name: note.seoTitle,
+      description: note.description,
+      inLanguage: 'zh-Hant-TW',
+      datePublished: note.date,
+      dateModified: note.date,
+      keywords: note.keywords.join('、'),
+      wordCount: note.minutes * 350,
+      image: {
+        '@type': 'ImageObject',
+        url: heroPng,
+        width: 1200,
+        height: 630,
+      },
+      author: {
+        '@type': 'Organization',
+        name: site.name,
+        url: site.url,
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: site.name,
+        url: site.url,
+        logo: {
+          '@type': 'ImageObject',
+          url: new URL('/assets/logo-full.webp', site.url).href,
+        },
+      },
+      mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+      isPartOf: { '@type': 'Blog', '@id': new URL('/notes', site.url).href, name: notesMeta.title },
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': `${url}#faq`,
+      mainEntity: note.faqs.map((f) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${url}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: '首頁', item: site.url },
+        { '@type': 'ListItem', position: 2, name: notesMeta.title, item: new URL('/notes', site.url).href },
+        { '@type': 'ListItem', position: 3, name: note.title, item: url },
+      ],
+    },
+  ],
+};
+---
+
+<Base
+  title={note.seoTitle}
+  description={note.description}
+  image={`${note.hero}.png`}
+  ogType="article"
+  publishedTime={note.date}
+  keywords={note.keywords}
+>
+  <script
+    slot="head"
+    type="application/ld+json"
+    set:html={JSON.stringify(schema)}
+    is:inline
+  />
+
+  <article class="note section">
+    <div class="container">
+      <nav class="note__crumb" aria-label="麵包屑">
+        <a href="/">首頁</a>
+        <span aria-hidden="true">／</span>
+        <a href="/notes">{notesMeta.title}</a>
+      </nav>
+
+      <p class="kicker note__kicker">
+        N°{note.no} ／ {note.kicker}
+      </p>
+      <h1 class="note__h1">{note.title}</h1>
+
+      <p class="note__meta">
+        <time class="num" datetime={note.date}>{dateLabel}</time>
+        <span aria-hidden="true">·</span>
+        <span class="num">約 {note.minutes} 分鐘</span>
+      </p>
+
+      <figure class="note__hero">
+        <img
+          src={`${note.hero}.webp`}
+          alt={note.heroAlt}
+          width="1200"
+          height="630"
+          fetchpriority="high"
+        />
+      </figure>
+
+      <p class="note__excerpt">{note.excerpt}</p>
+
+      <div class="note__body">
+        <slot />
+      </div>
+
+      <section class="note__faq" aria-labelledby="note-faq-title">
+        <p class="kicker">FAQ</p>
+        <h2 class="note__faq-title" id="note-faq-title">這篇的相關問題</h2>
+        <ul class="nfaq">
+          {note.faqs.map((f, i) => (
+            <li class="nfaq__item">
+              <details class="nfaq__d">
+                <summary class="nfaq__q">
+                  <span class="nfaq__no num">{String(i + 1).padStart(2, '0')}</span>
+                  <span class="nfaq__text">{f.q}</span>
+                  <span class="nfaq__sign" aria-hidden="true"></span>
+                </summary>
+                <div class="nfaq__a"><p>{f.a}</p></div>
+              </details>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <aside class="note__cta">
+        <h2 class="note__cta-title">要投放，先來 Telegram 說一下你的情況</h2>
+        <p class="note__cta-text">
+          帳戶、支付卡、BM 與追蹤設定由我們處理。說一下你要投哪個區域、大概想跑多少量，我們回你適用哪個方案。
+        </p>
+        <a class="cta" href={site.telegram} target="_blank" rel="noopener">
+          Telegram 洽詢
+          <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+            <path d="M2 8h11M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none" />
+          </svg>
+        </a>
+      </aside>
+
+      <nav class="note__nav" aria-label="上下篇">
+        {prev ? (
+          <a class="note__nav-item" href={`/notes/${prev.slug}`}>
+            <span class="kicker">← 上一篇</span>
+            <span class="note__nav-title">{prev.title}</span>
+          </a>
+        ) : <span></span>}
+        {next && (
+          <a class="note__nav-item note__nav-item--next" href={`/notes/${next.slug}`}>
+            <span class="kicker">下一篇 →</span>
+            <span class="note__nav-title">{next.title}</span>
+          </a>
+        )}
+      </nav>
+
+      <p class="note__back">
+        <a class="cta cta--ghost" href="/notes">回筆記列表</a>
+      </p>
+    </div>
+  </article>
+</Base>
+
+<style is:global>
+  .note { position: relative; }
+
+  .note__crumb {
+    display: flex;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text-3);
+    margin-bottom: 26px;
+  }
+
+  .note__crumb a {
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+  }
+
+  .note__crumb a:hover { color: var(--ink); border-bottom-color: var(--ink); }
+
+  .note__h1 {
+    font-size: clamp(32px, 5.2vw, 50px);
+    font-weight: 900;
+    line-height: 1.02;
+    letter-spacing: -.035em;
+    margin: 10px 0 14px;
+    max-width: 20ch;
+  }
+
+  .note__meta {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    font-size: 12px;
+    color: var(--text-3);
+    margin-bottom: 34px;
+  }
+
+  .note__hero {
+    margin-bottom: 30px;
+    background: var(--illustration-bg);
+    border: var(--border);
+  }
+
+  .note__hero img { width: 100%; height: auto; }
+
+  .note__excerpt {
+    max-width: 62ch;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.75;
+    letter-spacing: -.01em;
+    padding-bottom: 26px;
+    border-bottom: var(--border);
+    margin-bottom: 34px;
+  }
+
+  /* ── Markdown 正文 ───────────────────────────────── */
+  .note__body { max-width: 62ch; }
+
+  .note__body h2 {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -.025em;
+    line-height: 1.4;
+    margin: 46px 0 12px;
+    padding-top: 22px;
+    border-top: var(--border);
+  }
+
+  .note__body h3 {
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -.015em;
+    line-height: 1.5;
+    margin: 30px 0 8px;
+  }
+
+  .note__body p { color: var(--text-2); margin-bottom: 16px; }
+
+  .note__body strong { color: var(--ink); font-weight: 700; }
+
+  .note__body ul,
+  .note__body ol {
+    color: var(--text-2);
+    padding-left: 1.4em;
+    margin-bottom: 16px;
+  }
+
+  .note__body ol { list-style: decimal; }
+  .note__body ul { list-style: disc; }
+  .note__body li { margin-bottom: 8px; }
+
+  .note__body code {
+    font-family: var(--font-mono);
+    font-size: .9em;
+    background: var(--bg-card);
+    border: var(--border);
+    padding: 1px 5px;
+  }
+
+  .note__body pre {
+    background: var(--bg-card);
+    border: var(--border);
+    padding: 16px 18px;
+    overflow-x: auto;
+    margin-bottom: 16px;
+    font-size: 12.5px;
+    line-height: 1.7;
+  }
+
+  .note__body pre code { background: none; border: 0; padding: 0; }
+
+  .note__body a {
+    border-bottom: 1px solid var(--line);
+    transition: border-color var(--dur-fast) var(--ease);
+  }
+
+  .note__body a:hover { border-bottom-color: var(--ink); }
+
+  .note__body blockquote {
+    border-left: 0;
+    background: var(--bg-card);
+    border: var(--border);
+    padding: 16px 18px;
+    margin-bottom: 16px;
+  }
+
+  .note__body blockquote p:last-child { margin-bottom: 0; }
+
+  .note__body figure {
+    margin: 32px 0;
+    background: var(--illustration-bg);
+    border: var(--border);
+  }
+
+  .note__body figure img { width: 100%; height: auto; }
+
+  .note__body figcaption {
+    font-size: 12px;
+    color: var(--text-3);
+    padding: 10px 14px;
+    border-top: var(--border);
+    background: var(--bg-card);
+  }
+
+  .note__body table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin-bottom: 16px;
+  }
+
+  .note__body th,
+  .note__body td {
+    border: var(--border);
+    padding: 8px 10px;
+    text-align: left;
+    vertical-align: top;
+    color: var(--text-2);
+  }
+
+  .note__body th { background: var(--bg-card); color: var(--ink); font-weight: 700; }
+
+  /* ── FAQ ─────────────────────────────────────────── */
+  .note__faq { margin-top: 64px; }
+
+  .note__faq-title {
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: -.03em;
+    line-height: 1.1;
+    margin: 8px 0 22px;
+  }
+
+  .nfaq__item { border-top: var(--border); }
+  .nfaq__item:last-child { border-bottom: var(--border); }
+
+  .nfaq__q {
+    display: grid;
+    grid-template-columns: 40px 1fr 20px;
+    align-items: start;
+    gap: 12px;
+    padding: 18px 0;
+    cursor: pointer;
+    list-style: none;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1.55;
+    letter-spacing: -.01em;
+    transition: color var(--dur-fast) var(--ease);
+  }
+
+  .nfaq__q::-webkit-details-marker { display: none; }
+  .nfaq__q:hover { color: var(--text-2); }
+
+  .nfaq__no {
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: .16em;
+    color: var(--text-3);
+    padding-top: 4px;
+  }
+
+  .nfaq__sign { position: relative; width: 14px; height: 14px; margin-top: 6px; }
+
+  .nfaq__sign::before,
+  .nfaq__sign::after {
+    content: '';
+    position: absolute;
+    background: var(--ink);
+    transition: transform var(--dur-fast) var(--ease), opacity var(--dur-fast) var(--ease);
+  }
+
+  .nfaq__sign::before { inset: 6px 0 auto; height: 2px; }
+  .nfaq__sign::after { inset: 0 6px auto; width: 2px; height: 14px; }
+
+  .nfaq__d[open] .nfaq__sign::after { transform: scaleY(0); opacity: 0; }
+
+  .nfaq__a {
+    grid-column: 2;
+    padding: 0 20px 20px 52px;
+    color: var(--text-2);
+    max-width: 62ch;
+  }
+
+  /* ── 文末 CTA ────────────────────────────────────── */
+  .note__cta {
+    margin-top: 64px;
+    padding: 30px 26px;
+    background: var(--bg-card);
+    border: var(--border);
+    border-radius: var(--radius);
+  }
+
+  .note__cta-title {
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: -.03em;
+    line-height: 1.2;
+    margin-bottom: 10px;
+    max-width: 20ch;
+  }
+
+  .note__cta-text {
+    color: var(--text-2);
+    max-width: 48ch;
+    margin-bottom: 20px;
+  }
+
+  /* ── 上下篇 ──────────────────────────────────────── */
+  .note__nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-top: 48px;
+  }
+
+  .note__nav-item {
+    display: grid;
+    gap: 6px;
+    padding: 18px 20px;
+    border: var(--border);
+    background: var(--bg-card);
+    transition: transform var(--dur-fast) var(--ease),
+                border-color var(--dur-fast) var(--ease),
+                box-shadow var(--dur-fast) var(--ease);
+  }
+
+  .note__nav-item:hover,
+  .note__nav-item:focus-visible {
+    transform: translateY(-5px);
+    border-color: #D8D8D8;
+    box-shadow: var(--shadow-hover);
+  }
+
+  .note__nav-item--next { text-align: right; }
+
+  .note__nav-title {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 1.5;
+    letter-spacing: -.01em;
+  }
+
+  .note__back { margin-top: 44px; }
+
+  @media (max-width: 760px) {
+    .note__nav { grid-template-columns: 1fr; }
+    .note__nav-item--next { text-align: left; }
+    .nfaq__q { grid-template-columns: 30px 1fr 18px; gap: 8px; font-size: 15px; }
+    .nfaq__a { padding-left: 38px; padding-right: 0; }
+    .note__cta { padding: 24px 20px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nfaq__q,
+    .nfaq__sign::before,
+    .nfaq__sign::after,
+    .note__nav-item,
+    .note__crumb a { transition-duration: 10ms; }
+
+    .note__nav-item:hover,
+    .note__nav-item:focus-visible { transform: none; }
+  }
+</style>

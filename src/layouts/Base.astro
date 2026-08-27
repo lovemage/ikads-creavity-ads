@@ -8,10 +8,29 @@ import SiteHeader from '../components/SiteHeader.astro';
 interface Props {
   title?: string;
   description?: string;
+  /** 社群分享圖，預設全站 og.png。文章頁傳自己的 hero */
+  image?: string;
+  /** 文章頁傳 article，其餘維持 website */
+  ogType?: 'website' | 'article';
+  /** ogType 為 article 時才輸出 */
+  publishedTime?: string;
+  keywords?: string[];
 }
 
-const { title = site.title, description = site.description } = Astro.props;
-const canonical = new URL(Astro.url.pathname, site.url).href;
+const {
+  title = site.title,
+  description = site.description,
+  image = '/og.png',
+  ogType = 'website',
+  publishedTime,
+  keywords,
+} = Astro.props;
+
+/* wrangler.jsonc 用 drop-trailing-slash 服務，canonical 也要無尾斜線，
+   否則 canonical 會指到一個必然轉址的網址 */
+const path = Astro.url.pathname.replace(/(.)\/$/, '$1');
+const canonical = new URL(path, site.url).href;
+const ogImage = new URL(image, site.url).href;
 ---
 
 <!doctype html>
@@ -21,18 +40,43 @@ const canonical = new URL(Astro.url.pathname, site.url).href;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {keywords && keywords.length > 0 && (
+      <meta name="keywords" content={keywords.join('、')} />
+    )}
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon-32.png" sizes="32x32" />
     <link rel="apple-touch-icon" href="/favicon-180.png" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
 
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:locale" content="zh_TW" />
     <meta property="og:site_name" content={site.name} />
-    <meta property="og:title" content={site.ogTitle} />
-    <meta property="og:description" content={site.ogDescription} />
+    <meta property="og:title" content={ogType === 'article' ? title : site.ogTitle} />
+    <meta
+      property="og:description"
+      content={ogType === 'article' ? description : site.ogDescription}
+    />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={new URL('/og.png', site.url).href} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={ogType === 'article' ? title : site.ogTitle} />
+    <meta
+      name="twitter:description"
+      content={ogType === 'article' ? description : site.ogDescription}
+    />
+    <meta name="twitter:image" content={ogImage} />
+
+    {ogType === 'article' && publishedTime && (
+      <>
+        <meta property="article:published_time" content={publishedTime} />
+        <meta property="article:author" content={site.name} />
+      </>
+    )}
+
+    {/* 結構化資料由各頁面透過具名 slot 塞入 */}
+    <slot name="head" />
 
     {/* 進場動畫的漸進增強開關，必須在樣式套用前執行 */}
     <script is:inline>

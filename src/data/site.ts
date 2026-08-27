@@ -15,9 +15,11 @@ export const site = {
   ogDescription: '帳戶、支付卡、素材、投放，一個月費談定。台灣、香港。USDT 計價。',
 };
 
+/** 錨點一律帶根路徑，/notes 底下的頁面才連得回首頁區塊 */
 export const nav = [
-  { href: '#services', label: '服務內容' },
-  { href: '#pricing', label: '方案價格' },
-  { href: '#process', label: '合作流程' },
-  { href: '#faq', label: '常見問題' },
+  { href: '/#services', label: '服務內容' },
+  { href: '/#pricing', label: '方案價格' },
+  { href: '/#process', label: '合作流程' },
+  { href: '/#faq', label: '常見問題' },
+  { href: '/notes', label: '廣告筆記' },
 ];

@@ -24,6 +24,19 @@ const SIZES = {
   default: [512, 512],
 };
 
+/**
+ * 筆記文章的圖走檔名規則，不逐張列舉。
+ * note-XX-hero 同時是該篇的 og:image，社群平台抓 PNG 最保險，
+ * 所以除了 WebP 再輸出一張縮好的 PNG，蓋掉原始大檔。
+ */
+const noteSize = (name) => {
+  if (/^note-\d+-hero$/.test(name)) return [1200, 630];
+  if (/^note-\d+-fig$/.test(name)) return [900, 600];
+  return null;
+};
+
+const isOgHero = (name) => /^note-\d+-hero$/.test(name);
+
 const kb = (n) => (n / 1024).toFixed(0).padStart(5);
 
 const pngs = (await readdir(SRC)).filter((f) => extname(f) === '.png');
@@ -49,7 +62,17 @@ for (const file of pngs) {
   }
 
   const out = join(SRC, `${name}.webp`);
-  const [w, h] = SIZES[name] ?? SIZES.default;
+  const [w, h] = noteSize(name) ?? SIZES[name] ?? SIZES.default;
+
+  // og:image 的 PNG 處理完會留在原地，prebuild 每次都會再掃到它。
+  // 已經有一份不比它舊的 WebP，就代表這張做過了，跳過免得反覆重壓。
+  if (isOgHero(name) && existsSync(out)) {
+    const [srcStat, outStat] = await Promise.all([stat(src), stat(out)]);
+    if (outStat.mtimeMs >= srcStat.mtimeMs) {
+      console.log(`${name.padEnd(16)} 已是最新，跳過`);
+      continue;
+    }
+  }
 
   const sizeBefore = (await stat(src)).size;
 
@@ -60,8 +83,20 @@ for (const file of pngs) {
 
   const sizeAfter = (await stat(out)).size;
 
+  // og:image 先縮到暫存檔，等原始檔移走再改回正式名稱
+  const ogTmp = isOgHero(name) ? join(SRC, `${name}.og.tmp.png`) : null;
+
+  if (ogTmp) {
+    await sharp(src)
+      .resize(w, h, { fit: 'inside', withoutEnlargement: true })
+      .png({ compressionLevel: 9, palette: true })
+      .toFile(ogTmp);
+  }
+
   // 原始檔留底，不進 dist
   await rename(src, join(KEEP, file));
+
+  if (ogTmp) await rename(ogTmp, src);
 
   before += sizeBefore;
   after += sizeAfter;

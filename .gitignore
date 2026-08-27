@@ -24,6 +24,8 @@ dist/
 # 素材原始檔：codex 產出的 PNG 由 npm run assets 轉成 WebP，
 # 只有 WebP 進版控，原始檔留在本機 plan_asset/generated/
 public/assets/*.png
+# 例外：筆記文章的 og:image，社群平台抓的是這幾張 PNG，必須上線
+!public/assets/note-*-hero.png
 plan_asset/generated/
 
 # 內部規劃文件與業主原始素材，不進公開倉庫
