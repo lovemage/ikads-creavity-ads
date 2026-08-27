@@ -76,6 +76,8 @@ export const features: Feature[] = [
   { label: '所有廣告系列', self: true, full: true },
   { label: '廣告帳號', self: true, full: true },
   { label: '廣告支付卡', self: true, full: true },
+  { label: '完整 BM 商業管理帳號使用權', self: true, full: true },
+  { label: 'Pixel 埋點與廣告成效追蹤', self: true, full: true },
   { label: '單一帳戶每日投放上限 100 USD', self: true, full: true },
   { label: '廣告素材', self: false, full: true },
   { label: '廣告文案內容', self: false, full: true },
